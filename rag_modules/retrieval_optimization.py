@@ -7,8 +7,8 @@ from langchain_community.retrievers import BM25Retriever
 class RetrievalOptimizationModule:
     """检索优化模块 - 负责混合检索和过滤"""
 
-    def __init__(self, rector_store: FAISS, chunks: List[Document]):
-        self.vector_store = rector_store
+    def __init__(self, vector_store: FAISS, chunks: List[Document]):
+        self.vector_store = vector_store
         self.chunks = chunks
         self.setup_retrievers()
 

@@ -20,7 +20,7 @@ class DataPreparationModule:
         self.parent_child_map: Dict[str,str] = {}  # 子块ID -> 父文档ID 映射
         
         
-    def load_document(self) -> List[Document]:
+    def load_documents(self) -> List[Document]:
         """加载文档数据"""
         documents = []
         data_path_obj = Path(self.data_path)
@@ -88,7 +88,7 @@ class DataPreparationModule:
         else:
             doc.metadata['difficulty'] = '未知'
             
-    def chunk_document(self) -> List[Document]:
+    def chunk_documents(self) -> List[Document]:
         """Markdown结构感知分块"""
         if not self.documents:
             raise ValueError("请先加载文档")

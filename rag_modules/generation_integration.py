@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import List
 
 
@@ -6,6 +7,7 @@ from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
+from langchain_community.chat_models import ChatOpenAI
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +24,23 @@ class GenerationIntegrationModule:
         self.max_tokens = max_tokens
         self.llm = None
         self.setup_llm()
+        
+    def setup_llm(self):
+        """初始化大语言模型"""
+        logger.info(f"初始化大语言模型: {self.model_name}")
+
+        api_key = os.getenv("DEEPSEEK_API_KEY")
+        if not api_key:
+            raise ValueError("请设置DEEPSEEK_API_KEY环境变量")
+
+        self.llm = ChatOpenAI(
+            model_name=self.model_name,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            api_key=api_key,
+            openai_api_base="https://api.deepseek.com/v1",
+        )
+        
 
     def query_router(self, query: str) -> str:
         """查询路由 - 根据查询类型选择不同的处理方式"""
@@ -172,12 +191,6 @@ class GenerationIntegrationModule:
         
         response = chain.invoke(query).strip()
         return response
-    
-    
-    
-    
-    
-    
     
     def _build_context(self, docs: List[Document], max_length:int = 2000) -> str:
         """构建上下文字符串"""

@@ -66,9 +66,8 @@ class IndexConstructionModule:
         
         self.vector_store = FAISS.load_local(
             self.index_save_path,
-            embedding=self.embeddings,
+            embeddings=self.embeddings,
             allow_dangerous_deserialization=True
         )
         return self.vector_store
-
 
